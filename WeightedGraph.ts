@@ -11,3 +11,7 @@ class Edge {
     this.weight = weight;
   }
 }
+
+class Graph {
+  map = {};
+}

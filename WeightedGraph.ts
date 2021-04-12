@@ -21,6 +21,10 @@ class PriorityQueue {
     }
   }
 
+  isEmpty() {
+    return this.values.length === 0;
+  }
+
   dequeue() {
     if (this.values.length > 0) {
       [this.values[0], this.values[this.values.length - 1]] = [
@@ -106,7 +110,7 @@ class Graph {
         set.add(`${edge.from} -> ${edge.to} (W:${edge.weight})`);
       }
     }
-    console.log(set);
+
     return set;
   }
   shortestDistance(node) {
@@ -119,20 +123,14 @@ class Graph {
     PQ.enqueue(node.label);
     while (PQ.values.length > 0) {
       let current = this.map[PQ.dequeue()];
-      console.log(current);
-
       visited.add(node.label);
       for (let n of current.adjacencyList) {
         if (visited.has(n.from)) continue;
         PQ.enqueue(n.from);
       }
+      console.log(visited);
     }
-    console.log(visited);
   }
-
-  //   _shortestDistance(node: Vertex, visited , queue: string[]) {
-
-  //   }
 }
 
 const graph = new Graph();
@@ -141,7 +139,13 @@ graph.addNode('B');
 graph.addNode('C');
 graph.addNode('D');
 graph.addNode('E');
-graph.addEdge('A', 'B', 2);
+graph.addEdge('A', 'B', 3);
+graph.addEdge('A', 'D', 2);
+graph.addEdge('A', 'C', 4);
+graph.addEdge('B', 'E', 1);
+graph.addEdge('B', 'D', 6);
+graph.addEdge('D', 'E', 5);
+graph.addEdge('D', 'C', 1);
 graph.print();
 graph.shortestDistance('A');
-console.log(graph.map);
+// console.log(graph.map);

@@ -1,18 +1,10 @@
-class NodeClass {
-  constructor(public val, public priority) {
-    this.val = val;
-    this.priority = priority;
-  }
-}
-
 class PriorityQueue {
   values;
   constructor() {
     this.values = [];
   }
-  enqueue(val, priority) {
-    var node = new NodeClass(val, priority);
-    this.values.push(node);
+  enqueue(val) {
+    this.values.push(val);
     this.bubbleUp();
   }
 
@@ -22,7 +14,7 @@ class PriorityQueue {
     while (idx > 0) {
       var parentIdx = Math.floor((idx - 1) / 2);
       var parent = this.values[parentIdx];
-      if (element.priority <= parent.priority) break;
+      if (element >= parent) break;
       this.values[parentIdx] = element;
       this.values[idx] = parent;
       idx = parentIdx;
@@ -30,7 +22,6 @@ class PriorityQueue {
   }
 
   dequeue() {
-    console.log(this.values);
     if (this.values.length > 0) {
       [this.values[0], this.values[this.values.length - 1]] = [
         this.values[this.values.length - 1],
@@ -52,14 +43,14 @@ class PriorityQueue {
       var swap = null;
       if (leftChildIdx < length) {
         leftChild = this.values[leftChildIdx];
-        if (leftChild.priority > element.priority) {
+        if (leftChild < element) {
           swap = leftChildIdx;
         }
       }
 
       if (
         (rightChildIdx < length && swap === null) ||
-        (swap !== null && rightChild > leftChild)
+        (swap !== null && rightChild < leftChild)
       ) {
         // inside the boundary
         swap = rightChildIdx;
@@ -74,7 +65,6 @@ class PriorityQueue {
   }
 }
 
-var PQ = new PriorityQueue();
 
 class Vertex {
   adjacencyList: Edge[];

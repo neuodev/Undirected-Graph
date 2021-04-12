@@ -20,4 +20,8 @@ class Graph {
   }
 }
 
-
+const graph = new Graph();
+graph.addNode('A');
+graph.addNode('B');
+graph.addNode('C');
+console.log(graph.map);

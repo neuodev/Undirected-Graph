@@ -114,6 +114,7 @@ class Graph {
 
     return set;
   }
+  // Dijkstra's Algorithm
   shortestDistance(from, to) {
     from = this.map[from];
     if (!from) return;
@@ -130,7 +131,7 @@ class Graph {
 
       for (let n of current.adjacencyList) {
         if (visited.has(n.to)) continue;
-        console.log(n.to);
+       
         let newDistance = distances[current.label] + n.weight;
 
         if (newDistance < distances[n.to]) {
@@ -140,9 +141,7 @@ class Graph {
         }
       }
     }
-    console.log(visited);
-    console.log(distances);
-    console.log(previousNodes);
+   
     return distances[to];
   }
 

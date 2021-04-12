@@ -187,13 +187,14 @@ class Graph {
   minimumSpanningTree() {
     const PQ = new PriorityQueue();
     let visited = new Set();
-    let spanningTree = [];
+    let spanningTree = new Set();
     let node = Object.keys(this.map)[0];
+    if (!node) return;
     PQ.enqueue(this.map[node], 0);
     while (!PQ.isEmpty()) {
       let currentNode = PQ.dequeue().val;
       visited.add(currentNode.label);
-      spanningTree.push(currentNode.label);
+      spanningTree.add(currentNode.label);
       let adjacencyList = currentNode.adjacencyList;
       for (let n of adjacencyList) {
         if (visited.has(n.to)) continue;
@@ -201,24 +202,34 @@ class Graph {
       }
     }
     console.log(spanningTree);
+    return spanningTree;
   }
 }
 
 const graph = new Graph();
+// graph.addNode('A');
+// graph.addNode('B');
+// graph.addNode('C');
+// graph.addNode('D');
+// graph.addNode('E');
+// graph.addEdge('A', 'B', 3);
+// graph.addEdge('A', 'D', 2);
+// graph.addEdge('A', 'C', 4);
+// graph.addEdge('B', 'E', 1);
+// graph.addEdge('B', 'D', 6);
+// graph.addEdge('D', 'E', 5);
+// graph.addEdge('D', 'C', 1);
+// graph.print();
+// console.log(graph.cycleDetection());
+// console.log(graph.shortestDistance('A', 'E'));
+// console.log(graph.map);
 graph.addNode('A');
 graph.addNode('B');
 graph.addNode('C');
 graph.addNode('D');
-graph.addNode('E');
 graph.addEdge('A', 'B', 3);
-graph.addEdge('A', 'D', 2);
-graph.addEdge('A', 'C', 4);
-graph.addEdge('B', 'E', 1);
-graph.addEdge('B', 'D', 6);
-graph.addEdge('D', 'E', 5);
-graph.addEdge('D', 'C', 1);
-graph.print();
-// console.log(graph.cycleDetection());
-// console.log(graph.shortestDistance('A', 'E'));
-// console.log(graph.map);
+graph.addEdge('A', 'C', 1);
+graph.addEdge('B', 'D', 4);
+graph.addEdge('B', 'C', 2);
+graph.addEdge('D', 'C', 5);
 graph.minimumSpanningTree();

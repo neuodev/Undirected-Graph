@@ -4,6 +4,10 @@ class Vertex {
     this.label = label;
     this.adjacencyList = [];
   }
+
+  addEdge(to: string, weight: number) {
+    this.adjacencyList.push(new Edge(this.label, to, weight));
+  }
 }
 
 class Edge {
@@ -23,8 +27,8 @@ class Graph {
   addEdge(from: string, to: string, weight: number) {
     if (!this.map[from] || !this.map[to] || from == to) return;
 
-    this.map[from].adjacencyList.push(new Edge(from, to, weight));
-    this.map[to].adjacencyList.push(new Edge(to, from, weight));
+    this.map[from].addEdge(to, weight);
+    this.map[to].addEdge(from, weight);
   }
   print() {
     let set = new Set();

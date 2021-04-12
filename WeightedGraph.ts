@@ -30,6 +30,7 @@ class PriorityQueue {
     }
     var removed = this.values.pop();
     this.bubbleDown();
+
     return removed;
   }
   bubbleDown() {
@@ -60,11 +61,10 @@ class PriorityQueue {
       this.values[swap] = element;
       idx = swap;
     }
-    console.log(this.values);
+
     return this.values;
   }
 }
-
 
 class Vertex {
   adjacencyList: Edge[];
@@ -109,12 +109,39 @@ class Graph {
     console.log(set);
     return set;
   }
+  shortestDistance(node) {
+    node = this.map[node];
+    if (!node) return;
+    let distances = {};
+    let previousNodes = {};
+    let visited = new Set();
+    let PQ = new PriorityQueue();
+    PQ.enqueue(node.label);
+    while (PQ.values.length > 0) {
+      let current = this.map[PQ.dequeue()];
+      console.log(current);
+
+      visited.add(node.label);
+      for (let n of current.adjacencyList) {
+        if (visited.has(n.from)) continue;
+        PQ.enqueue(n.from);
+      }
+    }
+    console.log(visited);
+  }
+
+  //   _shortestDistance(node: Vertex, visited , queue: string[]) {
+
+  //   }
 }
 
 const graph = new Graph();
 graph.addNode('A');
 graph.addNode('B');
 graph.addNode('C');
+graph.addNode('D');
+graph.addNode('E');
 graph.addEdge('A', 'B', 2);
 graph.print();
+graph.shortestDistance('A');
 console.log(graph.map);

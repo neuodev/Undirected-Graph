@@ -14,4 +14,10 @@ class Edge {
 
 class Graph {
   map = {};
+  addNode(val) {
+    const node = new Vertex(val);
+    if (!this.map[val]) this.map[val] = node;
+  }
 }
+
+

@@ -117,7 +117,7 @@ class Graph {
   // Dijkstra's Algorithm
   shortestDistance(from, to) {
     from = this.map[from];
-    if (!from) return;
+    if (!from || !to) return;
     let distances = this._initDistance();
     distances[from.label] = 0;
 
@@ -131,7 +131,7 @@ class Graph {
 
       for (let n of current.adjacencyList) {
         if (visited.has(n.to)) continue;
-       
+
         let newDistance = distances[current.label] + n.weight;
 
         if (newDistance < distances[n.to]) {
@@ -141,7 +141,7 @@ class Graph {
         }
       }
     }
-   
+
     return distances[to];
   }
 
@@ -152,6 +152,34 @@ class Graph {
     }
 
     return hashTable;
+  }
+
+  cycleDetection() {
+    let visited = new Set();
+    for (let node in this.map) {
+      const currentNode = this.map[node];
+      if (
+        !visited.has(currentNode.label) &&
+        this._cycleDetection(currentNode, visited, '')
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+  _cycleDetection(node: Vertex, visited, from: string) {
+    const adjacencyList = node.adjacencyList;
+    visited.add(node.label);
+    for (let n of adjacencyList) {
+      if (n.to == from) continue;
+      if (visited.has(n.to)) return true;
+
+      let nextNode = this.map[n.to];
+      if (this._cycleDetection(nextNode, visited, node.label)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
@@ -169,5 +197,6 @@ graph.addEdge('B', 'D', 6);
 graph.addEdge('D', 'E', 5);
 graph.addEdge('D', 'C', 1);
 graph.print();
+console.log(graph.cycleDetection());
 console.log(graph.shortestDistance('A', 'E'));
 console.log(graph.map);

@@ -22,9 +22,20 @@ class Graph {
   }
   addEdge(from: string, to: string, weight: number) {
     if (!this.map[from] || !this.map[to] || from == to) return;
-    const newEdge = new Edge(from, to, weight);
-    this.map[from].adjacencyList.push(newEdge);
-    this.map[to].adjacencyList.push(newEdge);
+
+    this.map[from].adjacencyList.push(new Edge(from, to, weight));
+    this.map[to].adjacencyList.push(new Edge(to, from, weight));
+  }
+  print() {
+    let set = new Set();
+    for (let node in this.map) {
+      let current = this.map[node];
+      for (let edge of current.adjacencyList) {
+        set.add(`${edge.from} -> ${edge.to} (W:${edge.weight})`);
+      }
+    }
+    console.log(set);
+    return set;
   }
 }
 
@@ -33,4 +44,5 @@ graph.addNode('A');
 graph.addNode('B');
 graph.addNode('C');
 graph.addEdge('A', 'B', 2);
+graph.print();
 console.log(graph.map);

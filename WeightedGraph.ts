@@ -181,6 +181,27 @@ class Graph {
     }
     return false;
   }
+
+  //@ Prim's algorithm:
+  // Extend the tree by adding the smallest connected edge
+  minimumSpanningTree() {
+    const PQ = new PriorityQueue();
+    let visited = new Set();
+    let spanningTree = [];
+    let node = Object.keys(this.map)[0];
+    PQ.enqueue(this.map[node], 0);
+    while (!PQ.isEmpty()) {
+      let currentNode = PQ.dequeue().val;
+      visited.add(currentNode.label);
+      spanningTree.push(currentNode.label);
+      let adjacencyList = currentNode.adjacencyList;
+      for (let n of adjacencyList) {
+        if (visited.has(n.to)) continue;
+        PQ.enqueue(this.map[n.to], n.weight);
+      }
+    }
+    console.log(spanningTree);
+  }
 }
 
 const graph = new Graph();
@@ -197,6 +218,7 @@ graph.addEdge('B', 'D', 6);
 graph.addEdge('D', 'E', 5);
 graph.addEdge('D', 'C', 1);
 graph.print();
-console.log(graph.cycleDetection());
-console.log(graph.shortestDistance('A', 'E'));
-console.log(graph.map);
+// console.log(graph.cycleDetection());
+// console.log(graph.shortestDistance('A', 'E'));
+// console.log(graph.map);
+graph.minimumSpanningTree();

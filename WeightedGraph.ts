@@ -3,8 +3,8 @@ class PriorityQueue {
   constructor() {
     this.values = [];
   }
-  enqueue(val) {
-    this.values.push(val);
+  enqueue(val, protity) {
+    this.values.push({ val, protity });
     this.bubbleUp();
   }
 
@@ -14,7 +14,7 @@ class PriorityQueue {
     while (idx > 0) {
       var parentIdx = Math.floor((idx - 1) / 2);
       var parent = this.values[parentIdx];
-      if (element >= parent) break;
+      if (element.protity >= parent.protity) break;
       this.values[parentIdx] = element;
       this.values[idx] = parent;
       idx = parentIdx;
@@ -37,6 +37,7 @@ class PriorityQueue {
 
     return removed;
   }
+
   bubbleDown() {
     var idx = 0;
     var length = this.values.length;
@@ -48,7 +49,7 @@ class PriorityQueue {
       var swap = null;
       if (leftChildIdx < length) {
         leftChild = this.values[leftChildIdx];
-        if (leftChild < element) {
+        if (leftChild.protity < element.protity) {
           swap = leftChildIdx;
         }
       }
@@ -113,23 +114,45 @@ class Graph {
 
     return set;
   }
-  shortestDistance(node) {
-    node = this.map[node];
-    if (!node) return;
-    let distances = {};
+  shortestDistance(from, to) {
+    from = this.map[from];
+    if (!from) return;
+    let distances = this._initDistance();
+    distances[from.label] = 0;
+
     let previousNodes = {};
     let visited = new Set();
     let PQ = new PriorityQueue();
-    PQ.enqueue(node.label);
-    while (PQ.values.length > 0) {
-      let current = this.map[PQ.dequeue()];
-      visited.add(node.label);
+    PQ.enqueue(from.label, 0);
+    while (!PQ.isEmpty()) {
+      let current = this.map[PQ.dequeue().val];
+      visited.add(current.label);
+
       for (let n of current.adjacencyList) {
-        if (visited.has(n.from)) continue;
-        PQ.enqueue(n.from);
+        if (visited.has(n.to)) continue;
+        console.log(n.to);
+        let newDistance = distances[current.label] + n.weight;
+
+        if (newDistance < distances[n.to]) {
+          distances[n.to] = newDistance;
+          previousNodes[n.to] = current.label;
+          PQ.enqueue(n.to, n.weight);
+        }
       }
-      console.log(visited);
     }
+    console.log(visited);
+    console.log(distances);
+    console.log(previousNodes);
+    return distances[to];
+  }
+
+  _initDistance() {
+    let hashTable = {};
+    for (let n in this.map) {
+      hashTable[n] = Infinity;
+    }
+
+    return hashTable;
   }
 }
 
@@ -147,5 +170,5 @@ graph.addEdge('B', 'D', 6);
 graph.addEdge('D', 'E', 5);
 graph.addEdge('D', 'C', 1);
 graph.print();
-graph.shortestDistance('A');
-// console.log(graph.map);
+console.log(graph.shortestDistance('A', 'E'));
+console.log(graph.map);
